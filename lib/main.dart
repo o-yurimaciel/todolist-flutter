@@ -42,13 +42,12 @@ class _HomeState extends State<Home> {
       _taskController.text = "";
       newTask["ok"] = false;
       _toDoList.add(newTask);
+      sortList();
       _saveData();
     });
   }
 
-  Future<Null> _refresh() async {
-    await Future.delayed(Duration(seconds: 1));
-
+  void sortList() {
     setState(() {
       _toDoList.sort((a, b) {
         if(a["ok"] && !b["ok"]) return 1;
@@ -58,6 +57,13 @@ class _HomeState extends State<Home> {
 
       _saveData();
     });
+  }
+
+
+  Future<Null> _refresh() async {
+    await Future.delayed(Duration(seconds: 1));
+
+    sortList();
 
     return null;
   }
@@ -133,6 +139,7 @@ class _HomeState extends State<Home> {
         onChanged: (checked) {
           setState(() {
             _toDoList[index]["ok"] = checked;
+            sortList();
             _saveData();
           });
         },
